@@ -1,9 +1,15 @@
 def solution(phone_book):
-    
-    phone_book.sort()
-    
-    for i in range(len(phone_book) - 1):
-        if phone_book[i+1].startswith(phone_book[i]):
-            return False
-    
-    return True
+    answer = True
+    hashMap = {}
+
+    for number in phone_book:
+        hashMap[number]='';
+        
+    length = len(phone_book)
+                 
+    for number in phone_book:
+        for i in range(len(number)):
+            if number[:i] in hashMap:
+                return False
+            
+    return answer
