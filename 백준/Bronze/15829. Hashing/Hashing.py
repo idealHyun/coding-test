@@ -9,4 +9,4 @@ alphabet = []
 for i,v in enumerate(string):
     hash += ((ord(v) - ord('a') + 1) * (31 ** i) % 1234567891)
 
-print(hash)
+print(hash% 1234567891)
