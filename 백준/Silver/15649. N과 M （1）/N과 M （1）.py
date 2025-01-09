@@ -1,22 +1,18 @@
 import sys
-from collections import deque
-
 input = lambda: sys.stdin.readline().rstrip()
 
 N, M = map(int,input().split())
-s=[]
+answer=[]
 
-def dfs(n,m):
-    if len(s)==m:
-        print(' '.join(map(str,s)))
+def backtracking():
+    if len(answer)==M:
+        print(" ".join(map(str,answer)))
         return
 
     for i in range(1,N+1):
-        if i in s:
-            continue
-        s.append(i)
-        dfs(i+1,m)
-        s.pop()
+        if i not in answer:
+            answer.append(i)
+            backtracking()
+            answer.pop()
 
-dfs(1,M)
-
+backtracking()
