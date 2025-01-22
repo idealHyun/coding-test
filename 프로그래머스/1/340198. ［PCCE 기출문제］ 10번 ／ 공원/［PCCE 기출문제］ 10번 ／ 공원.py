@@ -4,24 +4,20 @@ def solution(mats, park):
     h_length = len(park)
     
     def calculate_length(i,j):                
-        visited = [[False for _ in range(w_length)] for _ in range(h_length)]
         min_length = 1
-        visited[i][j] = True
         
         # 해당 변을 가진 정사각형에 다 -1 인지 확인
-        def check(n,visited,i,j):
-            for a in range(i,i+n):
-                if a >= h_length:
+        def check(n, i, j):
+            # 추가된 행과 열만 검사
+            for a in range(i, i + n):
+                if a >= h_length or j + n - 1 >= w_length or park[a][j + n - 1] != "-1":
                     return False
-                for b in range(j,j+n):
-                    if b>= w_length:
-                        return False
-                    if park[a][b] != "-1":
-                        return False
-                    
+            for b in range(j, j + n):
+                if i + n - 1 >= h_length or b >= w_length or park[i + n - 1][b] != "-1":
+                    return False
             return True
         
-        while(check(min_length+1,visited,i,j)):
+        while(check(min_length+1,i,j)):
             min_length +=1
         
         return min_length
