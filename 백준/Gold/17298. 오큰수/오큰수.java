@@ -8,7 +8,7 @@ class Main {
 
         int N = Integer.parseInt(br.readLine());
         int[] arr = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-        List<Integer> answer = new ArrayList<>();
+        int[] answer = new int[N];
         Stack<Integer> stack = new Stack<>();
 
         for (int i = N - 1; i >= 0; i--) {
@@ -28,11 +28,11 @@ class Main {
             }
 
             stack.add(arr[i]);
-            answer.add(num);
+            answer[i] = num;
         }
 
-        for (int i = N - 1; i >= 0; i--) {
-            sb.append(answer.get(i) + " ");
+        for (int n : answer) {
+            sb.append(n + " ");
         }
         System.out.print(sb.toString());
     }
