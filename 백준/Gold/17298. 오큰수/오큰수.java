@@ -9,7 +9,7 @@ class Main {
         int N = Integer.parseInt(br.readLine());
         int[] arr = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
         int[] answer = new int[N];
-        Stack<Integer> stack = new Stack<>();
+        Deque<Integer> stack = new ArrayDeque<>();
 
         for (int i = N - 1; i >= 0; i--) {
             int num;
@@ -27,7 +27,7 @@ class Main {
                 }
             }
 
-            stack.add(arr[i]);
+            stack.push(arr[i]);
             answer[i] = num;
         }
 
