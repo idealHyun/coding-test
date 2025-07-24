@@ -14,28 +14,26 @@ class Main {
         int cur_idx = 0; // trucks 인덱스
         int answer = 0;
 
-        Deque<int[]> q = new ArrayDeque<>();
+        Deque<Integer> q = new ArrayDeque<>();
+        for (int i = 0; i < w; i++) {
+            q.push(0);
+        }
 
         while (true) {
-            if (cur_idx == n && q.size() == 0) {
+            if (cur_idx == n && cur_weight == 0) {
                 break;
             }
-            // 다리 위 전진 -> 빠져나갈수 있으면 빠져나가기
-            if (q.size() > 0) {
-                for (int[] t : q) {
-                    t[1] += 1;
-                    if (t[1] == w) {
-                        cur_weight -= t[0];
-                        q.removeFirst();
-                    }
-                }
-            }
+
+            // 전진
+            cur_weight -= q.removeFirst();
 
             // 다리에 올릴 수 있으면 트럭 올리기
             if (cur_idx < n && cur_weight + trucks[cur_idx] <= L) {
-                q.add(new int[] { trucks[cur_idx], 0 });
+                q.add(trucks[cur_idx]);
                 cur_weight += trucks[cur_idx];
                 cur_idx++;
+            } else {
+                q.add(0);
             }
 
             answer++;
