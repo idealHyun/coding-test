@@ -7,8 +7,9 @@ public class Main {
     static int[] dy = { -0, 1, 0, -1 };
     static int[] dx = { 1, 0, -1, 0 };
     static boolean[][] apples;
+    static boolean[][] snakeMap;
     static Map<Integer, Character> commands = new HashMap<>();
-    static Queue<List<Integer>> snakeBodys = new ArrayDeque<>();
+    static Queue<int[]> snakeBodys = new ArrayDeque<>();
     static StringTokenizer st;
 
     public static void main(String[] args) throws Exception {
@@ -18,6 +19,8 @@ public class Main {
         K = Integer.parseInt(br.readLine());
 
         apples = new boolean[N][N];
+        snakeMap = new boolean[N][N];
+
         for (int i = 0; i < K; i++) {
             st = new StringTokenizer(br.readLine());
             int ay = Integer.parseInt(st.nextToken()) - 1;
@@ -33,22 +36,26 @@ public class Main {
             commands.put(key, value);
         }
 
-        // 벽에 부딪히거나 몸에 부딪히면 종료
-        snakeBodys.offer(Arrays.asList(0, 0));
+        snakeBodys.offer(new int[] { 0, 0 });
+        snakeMap[0][0] = true;
+
         while (true) {
             // 좌표 계산
             int ny = y + dy[dir];
             int nx = x + dx[dir];
 
-            if (isValid(ny, nx) && !isSnakeBody(ny, nx)) {
+            // 벽에 부딪히거나 몸에 부딪히면 종료
+            if (isValid(ny, nx) && !snakeMap[ny][nx]) {
                 // 머리 이동
-                snakeBodys.offer(Arrays.asList(ny, nx));
+                snakeBodys.offer(new int[] { ny, nx });
+                snakeMap[ny][nx] = true;
 
                 // 사과 여부에 따른 분기
                 if (apples[ny][nx]) {
                     apples[ny][nx] = false;
                 } else {
-                    snakeBodys.poll();
+                    int[] tail = snakeBodys.poll();
+                    snakeMap[tail[0]][tail[1]] = false;
                 }
 
                 // 방향 전환 여부에 따른 분기
@@ -70,10 +77,6 @@ public class Main {
         }
 
         System.out.println(time);
-    }
-
-    private static boolean isSnakeBody(int ny, int nx) {
-        return snakeBodys.contains(Arrays.asList(ny, nx));
     }
 
     private static boolean isValid(int ny, int nx) {
