@@ -23,10 +23,9 @@ public class Main {
         PX = Integer.parseInt(st.nextToken()) - 1;
 
         for (int i = 0; i < 4; i++) {
-            boolean[][] visited = new boolean[N][M];
             boolean[][][] cVisited = new boolean[N][M][4];
             tempDir = i;
-            dfs(PY, PX, i, 1, visited, cVisited);
+            dfs(PY, PX, i, 1, cVisited);
             if (answerTime == -1)
                 break;
         }
@@ -57,11 +56,9 @@ public class Main {
         }
     }
 
-    private static void dfs(int y, int x, int dir, int time, boolean[][] visited, boolean[][][] cVisited) {
+    private static void dfs(int y, int x, int dir, int time, boolean[][][] cVisited) {
         int ny = y + dy[dir];
         int nx = x + dx[dir];
-
-        // System.out.println(y + " " + x + " " + dir + " " + time + " ");
 
         // 맵 밖이거나 블랙홀일 경우 종료
         if (!isValid(ny, nx) || isBlackHole(ny, nx)) {
@@ -74,18 +71,16 @@ public class Main {
             return;
         }
 
-        // 지나간 곳 지나갔을 경우 무한히 전파
+        // 행성을 같은 방향으로 똑같이 접근했을 경우 무한이라고 판단
         if (cVisited[ny][nx][dir]) {
             answerTime = -1;
             answerDir = tempDir;
             return;
         }
 
-        visited[ny][nx] = true;
-
         // 빈칸을 만날 경우
         if (map[ny][nx] == '.') {
-            dfs(ny, nx, dir, time + 1, visited, cVisited);
+            dfs(ny, nx, dir, time + 1, cVisited);
         }
         // 행성을 만날 경우
         else if (map[ny][nx] == '/') {
@@ -100,7 +95,7 @@ public class Main {
             } else if (dir == 3) {
                 dir = 2;
             }
-            dfs(ny, nx, dir, time + 1, visited, cVisited);
+            dfs(ny, nx, dir, time + 1, cVisited);
 
         } else if (map[ny][nx] == '\\') {
             cVisited[ny][nx][dir] = true;
@@ -114,7 +109,7 @@ public class Main {
                 dir = 0;
             }
 
-            dfs(ny, nx, dir, time + 1, visited, cVisited);
+            dfs(ny, nx, dir, time + 1, cVisited);
         }
     }
 
